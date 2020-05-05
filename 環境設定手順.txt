@@ -1,0 +1,55 @@
+Docker環境設定手順
+
+環境
+・Rails version: 5.2.4.1
+・Ruby version: 2.5.3 (x86_64-linux)
+・PostgreSQL: 11.6
+
+注意；Windowsでリモートとのシンボリックリンクを有効にする必要がある。
+
+・Windowsでリモートサーバ上のシンボリックリンクを有効にする
+https://www.atmarkit.co.jp/ait/articles/1306/28/news106.html
+
+
+①下記のファイルが存在することを確認する。
+docker-compose.yml
+Dockerfile
+Gemfile
+Gemfile.lock
+
+②docker-composeが存在するフォルダ内で、docker-compose buildを実行する。
+$ docker-compose build # コンテナをビルド
+
+④railsコンテナを起動する。
+$ docker exec -it railsgirls_web bash
+
+⑤docker-composeが存在するフォルダ内で、rails newを実行する。
+$ rails new . --force --no-deps --database=postgresql
+$ rails new . --force --no-deps --database=postgresql --skip-bundle
+
+⑥bundleのアップデート
+$ bundle install 
+
+⑦Webpackerのインストール
+$ rails webpacker:install
+
+⑧database.ymlを修正する
+/config/database.yml
+
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # 追記
+  host: db
+  port: <%= ENV.fetch('DATABASE_PORT') { 5432 } %>
+  username: <%= ENV.fetch('DATABASE_USER') { 'root' } %>
+  password: <%= ENV.fetch('DATABASE_PASSWORD') { 'password' } %>
+
+⑨DB作成
+$ rails db:create
+
+⑩Docker起動
+# -dオプションをつけてバックグラウンド実行するとこの後新しいシェルを立ち上げる必要がなくなる
+$ docker-compose up -d # コンテナの一斉起動
+
+※起動コマンド
+bundle exec rails s -p 3000 -b '0.0.0.0'
+ 
