@@ -7,6 +7,9 @@ RUN yum -y install -y gcc-c++ openssl-devel readline-devel zlib-devel bzip2 gcc 
 RUN yum -y install -y postgresql-devel
 RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash - ; yum -y install nodejs
 
+# 環境変数を設定 (エンコーディング方式を指定)
+ENV PYTHONIOENCODING utf-8
+
 # IUS Community Project のリポジトリを追加する
 RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm
 # Python3.6をインストール
