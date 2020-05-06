@@ -25,4 +25,4 @@ RUN python3 -m virtualenv $DJANGO_GIRLS/myvenv
 # ホスト側（ローカル）のrequirements.txtを追加する
 COPY ./requirements.txt $DJANGO_GIRLS/requirements.txt
 # 仮想環境を起動し、Djangoをインストール
-RUN source $DJANGO_GIRLS/myvenv/bin/activate; pip install -r requirements.txt
+RUN source $DJANGO_GIRLS/myvenv/bin/activate; pip install -r requirements.txt; pip install psycopg2
